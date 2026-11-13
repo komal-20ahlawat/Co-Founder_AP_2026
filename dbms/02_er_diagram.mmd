@@ -1,0 +1,160 @@
+---
+title: Co-Founder Matching Platform - ER Diagram
+---
+erDiagram
+    USERS {
+        SERIAL id PK
+        VARCHAR_255 email UK
+        TEXT password_hash
+        BOOLEAN email_verified
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    PROFILES {
+        SERIAL id PK
+        INTEGER user_id FK,UK
+        VARCHAR full_name
+        TEXT profile_picture
+        VARCHAR headline
+        TEXT bio
+        TEXT education
+        TEXT experience
+        VARCHAR github_url
+        VARCHAR portfolio_url
+        VARCHAR availability
+        TEXT collaboration_preferences
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    SKILLS {
+        SERIAL id PK
+        VARCHAR name UK
+        TIMESTAMP created_at
+    }
+
+    USER_SKILLS {
+        SERIAL id PK
+        INTEGER user_id FK
+        INTEGER skill_id FK
+        TIMESTAMP created_at
+    }
+
+    INTERESTS {
+        SERIAL id PK
+        VARCHAR name UK
+        TIMESTAMP created_at
+    }
+
+    USER_INTERESTS {
+        SERIAL id PK
+        INTEGER user_id FK
+        INTEGER interest_id FK
+        TIMESTAMP created_at
+    }
+
+    PROJECTS {
+        SERIAL id PK
+        INTEGER owner_id FK
+        VARCHAR project_name
+        TEXT description
+        TEXT problem_statement
+        VARCHAR industry
+        VARCHAR project_stage
+        VARCHAR collaboration_type
+        VARCHAR expected_commitment
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    PROJECT_SKILLS {
+        SERIAL id PK
+        INTEGER project_id FK
+        INTEGER skill_id FK
+        TIMESTAMP created_at
+    }
+
+    PROJECT_ROLES {
+        SERIAL id PK
+        INTEGER project_id FK
+        VARCHAR role_name
+        TEXT description
+        INTEGER required_members
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    CONNECTIONS {
+        SERIAL id PK
+        INTEGER requester_id FK
+        INTEGER recipient_id FK
+        VARCHAR status
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    APPLICATIONS {
+        SERIAL id PK
+        INTEGER project_id FK
+        INTEGER applicant_id FK
+        VARCHAR_150 desired_role
+        TEXT application_message
+        VARCHAR status
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    PROJECT_MEMBERS {
+        SERIAL id PK
+        INTEGER project_id FK
+        INTEGER user_id FK
+        VARCHAR_150 role_name
+        TIMESTAMP joined_at
+    }
+
+    NOTIFICATIONS {
+        SERIAL id PK
+        INTEGER user_id FK
+        INTEGER actor_id FK "Nullable"
+        VARCHAR notification_type
+        TEXT message
+        BOOLEAN is_read
+        TIMESTAMP created_at
+    }
+
+    USERS ||--o| PROFILES : "has profile"
+    USERS ||--o{ USER_SKILLS : "has skill links"
+    SKILLS ||--o{ USER_SKILLS : "appears in user skill links"
+    USERS ||--o{ USER_INTERESTS : "has interest links"
+    INTERESTS ||--o{ USER_INTERESTS : "appears in user interest links"
+
+    USERS ||--o{ PROJECTS : "owns projects"
+    PROJECTS ||--o{ PROJECT_SKILLS : "has required skill links"
+    SKILLS ||--o{ PROJECT_SKILLS : "appears in project skill links"
+    PROJECTS ||--o{ PROJECT_ROLES : "defines roles"
+    PROJECTS ||--o{ APPLICATIONS : "receives applications"
+    USERS ||--o{ APPLICATIONS : "submits applications"
+    PROJECTS ||--o{ PROJECT_MEMBERS : "has members"
+    USERS ||--o{ PROJECT_MEMBERS : "joins projects"
+
+    USERS ||--o{ CONNECTIONS : "sends connection requests"
+    USERS ||--o{ CONNECTIONS : "receives connection requests"
+
+    USERS ||--o{ NOTIFICATIONS : "receives notifications"
+    USERS o|--o{ NOTIFICATIONS : "may act in notifications"
+
+    %% Composite UNIQUE constraints from the SQL schema:
+    %% USER_SKILLS: UNIQUE (user_id, skill_id)
+    %% USER_INTERESTS: UNIQUE (user_id, interest_id)
+    %% PROJECT_SKILLS: UNIQUE (project_id, skill_id)
+    %% CONNECTIONS: UNIQUE (requester_id, recipient_id)
+    %% APPLICATIONS: UNIQUE (project_id, applicant_id)
+    %% PROJECT_MEMBERS: UNIQUE (project_id, user_id)
+    %%
+    %% Other SQL constraints:
+    %% PROFILES.user_id is UNIQUE (one profile per user).
+    %% PROJECT_ROLES.required_members must be greater than zero.
+    %% CONNECTIONS.requester_id must differ from recipient_id.
+    %% APPLICATIONS and CONNECTIONS status values are constrained by CHECK.
+    %% NOTIFICATIONS.actor_id is nullable; NOTIFICATIONS.user_id is required.
