@@ -299,3 +299,149 @@ SELECT
     ) AS member_count
 FROM projects p
 LEFT JOIN profiles pr ON pr.user_id = p.owner_id;
+
+
+
+-- R10 | READ | Get projects created by other users.
+-- This is the common listing query above with:
+-- WHERE p.owner_id != $1
+-- ORDER BY p.created_at DESC
+-- $1 = authenticated user's id
+SELECT
+    p.id,
+    p.owner_id,
+    p.project_name,
+    p.description,
+    p.industry,
+    p.project_stage,
+    p.collaboration_type,
+    p.expected_commitment,
+    p.created_at,
+    pr.full_name AS founder_name,
+    COALESCE(
+        (
+            SELECT json_agg(s.name ORDER BY s.name)
+            FROM project_skills ps
+            JOIN skills s ON s.id = ps.skill_id
+            WHERE ps.project_id = p.id
+        ),
+        '[]'::json
+    ) AS skills,
+    COALESCE(
+        (
+            SELECT json_agg(
+                json_build_object(
+                    'id', r.id,
+                    'title', r.role_name,
+                    'openings', r.required_members
+                )
+                ORDER BY r.id
+            )
+            FROM project_roles r
+            WHERE r.project_id = p.id
+        ),
+        '[]'::json
+    ) AS roles,
+    COALESCE(
+        (
+            SELECT SUM(r.required_members)
+            FROM project_roles r
+            WHERE r.project_id = p.id
+        ),
+        0
+    ) AS required_members,
+    (
+        SELECT COUNT(*)
+        FROM project_members pm
+        WHERE pm.project_id = p.id
+    ) AS member_count
+FROM projects p
+LEFT JOIN profiles pr ON pr.user_id = p.owner_id
+WHERE p.owner_id != $1
+ORDER BY p.created_at DESC;
+
+-- R11 | READ | Get projects created by the logged-in user.
+-- $1 = authenticated user's id
+SELECT
+    p.id,
+    p.owner_id,
+    p.project_name,
+    p.description,
+    p.industry,
+    p.project_stage,
+    p.collaboration_type,
+    p.expected_commitment,
+    p.created_at,
+    pr.full_name AS founder_name,
+    COALESCE(
+        (
+            SELECT json_agg(s.name ORDER BY s.name)
+            FROM project_skills ps
+            JOIN skills s ON s.id = ps.skill_id
+            WHERE ps.project_id = p.id
+        ),
+        '[]'::json
+    ) AS skills,
+    COALESCE(
+        (
+            SELECT json_agg(
+                json_build_object(
+                    'id', r.id,
+                    'title', r.role_name,
+                    'openings', r.required_members
+                )
+                ORDER BY r.id
+            )
+            FROM project_roles r
+            WHERE r.project_id = p.id
+        ),
+        '[]'::json
+    ) AS roles,
+    COALESCE(
+        (
+            SELECT SUM(r.required_members)
+            FROM project_roles r
+            WHERE r.project_id = p.id
+        ),
+        0
+    ) AS required_members,
+    (
+        SELECT COUNT(*)
+        FROM project_members pm
+        WHERE pm.project_id = p.id
+    ) AS member_count
+FROM projects p
+LEFT JOIN profiles pr ON pr.user_id = p.owner_id
+WHERE p.owner_id = $1
+ORDER BY p.created_at DESC;
+
+-- W15 | WRITE | Delete a project only if it belongs to the logged-in user.
+-- $1 = project id; $2 = authenticated user's id
+-- Related rows are removed through the ON DELETE CASCADE constraints
+-- defined in schema.sql.
+DELETE FROM projects
+WHERE id = $1 AND owner_id = $2
+RETURNING id;
+
+
+-- =========================================================
+-- 6. TRANSACTION FLOW USED BY THE BACKEND
+-- =========================================================
+-- Signup transaction:
+-- BEGIN;
+--   Run query W1 (insert user).
+--   Run query W2 (insert initial profile).
+-- COMMIT;
+-- On error: ROLLBACK.
+--
+-- Project creation transaction:
+-- BEGIN;
+--   Run query W10 (insert project).
+--   Run query W11 (add owner as Founder).
+--   For each required skill:
+--     Run query W12 (insert/find skill).
+--     Run query W13 (link skill to project).
+--   For each project role:
+--     Run query W14 (insert role).
+-- COMMIT;
+-- On error: ROLLBACK.
