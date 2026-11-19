@@ -148,3 +148,154 @@ ON CONFLICT (user_id, skill_id) DO NOTHING;
 DELETE FROM user_skills
 WHERE user_id = $1 AND skill_id = $2
 RETURNING skill_id;
+
+-- =========================================================
+-- 4. INTERESTS
+-- Source: controllers/interestController.js
+-- =========================================================
+
+-- R7 | READ | Get all available interests.
+SELECT id, name
+FROM interests
+ORDER BY name ASC;
+
+-- R8 | READ | Get interests selected by the logged-in user.
+-- $1 = authenticated user's id
+SELECT i.id, i.name
+FROM user_interests ui
+JOIN interests i ON i.id = ui.interest_id
+WHERE ui.user_id = $1
+ORDER BY i.name ASC;
+
+-- W7 | WRITE | Insert an interest if it does not exist, or return the existing one.
+-- $1 = interest name
+INSERT INTO interests (name)
+VALUES ($1)
+ON CONFLICT (name)
+DO UPDATE SET name = EXCLUDED.name
+RETURNING id, name;
+
+-- W8 | WRITE | Link the interest to the logged-in user.
+-- $1 = user id; $2 = interest id
+INSERT INTO user_interests (user_id, interest_id)
+VALUES ($1, $2)
+ON CONFLICT (user_id, interest_id) DO NOTHING;
+
+-- W9 | WRITE | Remove an interest from the logged-in user's profile.
+-- $1 = user id; $2 = interest id
+DELETE FROM user_interests
+WHERE user_id = $1 AND interest_id = $2
+RETURNING interest_id;
+
+
+-- =========================================================
+-- 5. PROJECTS
+-- Source: controllers/projectController.js
+-- =========================================================
+
+-- W10 | WRITE | Create a project.
+-- $1 = owner id
+-- $2 = project name
+-- $3 = description (JSON text containing summary, solution, goals, location)
+-- $4 = problem statement
+-- $5 = industry/category
+-- $6 = project stage
+-- $7 = collaboration type/location
+-- $8 = expected commitment
+INSERT INTO projects (
+    owner_id,
+    project_name,
+    description,
+    problem_statement,
+    industry,
+    project_stage,
+    collaboration_type,
+    expected_commitment
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+RETURNING id;
+
+-- W11 | WRITE | Add the project owner as the Founder in the project team.
+-- $1 = project id; $2 = owner/user id; $3 = role name ('Founder')
+INSERT INTO project_members (project_id, user_id, role_name)
+VALUES ($1, $2, $3)
+ON CONFLICT (project_id, user_id) DO NOTHING;
+
+-- W12 | WRITE | Insert a required skill if it does not exist and return its id.
+-- Used once for each skill while creating a project.
+-- $1 = skill name
+INSERT INTO skills (name)
+VALUES ($1)
+ON CONFLICT (name)
+DO UPDATE SET name = EXCLUDED.name
+RETURNING id;
+
+-- W13 | WRITE | Link a required skill to the project.
+-- $1 = project id; $2 = skill id
+INSERT INTO project_skills (project_id, skill_id)
+VALUES ($1, $2)
+ON CONFLICT (project_id, skill_id) DO NOTHING;
+
+-- W14 | WRITE | Add a required role to the project.
+-- $1 = project id; $2 = role name; $3 = number of openings
+INSERT INTO project_roles (
+    project_id,
+    role_name,
+    required_members
+)
+VALUES ($1, $2, $3);
+
+-- R9 | READ | Common project listing query.
+-- The backend appends one of the two WHERE clauses shown in R10 and R11.
+-- It returns project details, required skills, roles, total openings
+-- and current team-member count.
+SELECT
+    p.id,
+    p.owner_id,
+    p.project_name,
+    p.description,
+    p.industry,
+    p.project_stage,
+    p.collaboration_type,
+    p.expected_commitment,
+    p.created_at,
+    pr.full_name AS founder_name,
+    COALESCE(
+        (
+            SELECT json_agg(s.name ORDER BY s.name)
+            FROM project_skills ps
+            JOIN skills s ON s.id = ps.skill_id
+            WHERE ps.project_id = p.id
+        ),
+        '[]'::json
+    ) AS skills,
+    COALESCE(
+        (
+            SELECT json_agg(
+                json_build_object(
+                    'id', r.id,
+                    'title', r.role_name,
+                    'openings', r.required_members
+                )
+                ORDER BY r.id
+            )
+            FROM project_roles r
+            WHERE r.project_id = p.id
+        ),
+        '[]'::json
+    ) AS roles,
+    COALESCE(
+        (
+            SELECT SUM(r.required_members)
+            FROM project_roles r
+            WHERE r.project_id = p.id
+        ),
+        0
+    ) AS required_members,
+    (
+        SELECT COUNT(*)
+        FROM project_members pm
+        WHERE pm.project_id = p.id
+    ) AS member_count
+FROM projects p
+LEFT JOIN profiles pr ON pr.user_id = p.owner_id;
