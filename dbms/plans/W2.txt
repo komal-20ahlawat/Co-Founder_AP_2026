@@ -1,0 +1,45 @@
+========== W2 - RUN 1 ==========
+BEGIN
+INSERT 0 1
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Insert on profiles  (cost=0.00..0.03 rows=0 width=0) (actual time=0.115..0.115 rows=0.00 loops=1)
+   Buffers: shared hit=57 dirtied=5
+   ->  Result  (cost=0.00..0.03 rows=1 width=1300) (actual time=0.042..0.042 rows=1.00 loops=1)
+         Buffers: shared hit=14 dirtied=1
+ Planning Time: 0.025 ms
+ Trigger for constraint profiles_user_id_fkey: time=0.221 calls=1
+ Execution Time: 0.344 ms
+(7 rows)
+
+ROLLBACK
+========== W2 - RUN 2 ==========
+BEGIN
+INSERT 0 1
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Insert on profiles  (cost=0.00..0.03 rows=0 width=0) (actual time=0.061..0.061 rows=0.00 loops=1)
+   Buffers: shared hit=57
+   ->  Result  (cost=0.00..0.03 rows=1 width=1300) (actual time=0.008..0.008 rows=1.00 loops=1)
+         Buffers: shared hit=14
+ Planning Time: 0.006 ms
+ Trigger for constraint profiles_user_id_fkey: time=0.206 calls=1
+ Execution Time: 0.272 ms
+(7 rows)
+
+ROLLBACK
+========== W2 - RUN 3 ==========
+BEGIN
+INSERT 0 1
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Insert on profiles  (cost=0.00..0.03 rows=0 width=0) (actual time=0.064..0.064 rows=0.00 loops=1)
+   Buffers: shared hit=57
+   ->  Result  (cost=0.00..0.03 rows=1 width=1300) (actual time=0.009..0.009 rows=1.00 loops=1)
+         Buffers: shared hit=14
+ Planning Time: 0.006 ms
+ Trigger for constraint profiles_user_id_fkey: time=0.209 calls=1
+ Execution Time: 0.278 ms
+(7 rows)
+
+ROLLBACK

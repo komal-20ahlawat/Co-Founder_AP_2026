@@ -1,0 +1,60 @@
+========== W9 - RUN 1 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+                                                                           QUERY PLAN                                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on user_interests  (cost=0.15..8.17 rows=1 width=6) (actual time=0.003..0.004 rows=1.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Scan using user_interests_user_id_interest_id_key on user_interests  (cost=0.15..8.17 rows=1 width=6) (actual time=0.001..0.001 rows=1.00 loops=1)
+         Index Cond: ((user_id = 28) AND (interest_id = 16))
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=10
+ Planning Time: 0.115 ms
+ Execution Time: 0.040 ms
+(10 rows)
+
+ROLLBACK
+========== W9 - RUN 2 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+                                                                           QUERY PLAN                                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on user_interests  (cost=0.15..8.17 rows=1 width=6) (actual time=0.004..0.004 rows=1.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Scan using user_interests_user_id_interest_id_key on user_interests  (cost=0.15..8.17 rows=1 width=6) (actual time=0.001..0.001 rows=1.00 loops=1)
+         Index Cond: ((user_id = 29) AND (interest_id = 17))
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=10
+ Planning Time: 0.091 ms
+ Execution Time: 0.036 ms
+(10 rows)
+
+ROLLBACK
+========== W9 - RUN 3 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+                                                                           QUERY PLAN                                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on user_interests  (cost=0.15..8.17 rows=1 width=6) (actual time=0.004..0.004 rows=1.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Scan using user_interests_user_id_interest_id_key on user_interests  (cost=0.15..8.17 rows=1 width=6) (actual time=0.001..0.001 rows=1.00 loops=1)
+         Index Cond: ((user_id = 30) AND (interest_id = 18))
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=10
+ Planning Time: 0.098 ms
+ Execution Time: 0.037 ms
+(10 rows)
+
+ROLLBACK

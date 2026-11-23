@@ -1,0 +1,45 @@
+========== W1 - RUN 1 ==========
+BEGIN
+                                            QUERY PLAN                                            
+--------------------------------------------------------------------------------------------------
+ Insert on users  (cost=0.00..0.03 rows=1 width=569) (actual time=0.110..0.111 rows=1.00 loops=1)
+   Buffers: shared hit=67 dirtied=4
+   ->  Result  (cost=0.00..0.03 rows=1 width=569) (actual time=0.028..0.029 rows=1.00 loops=1)
+         Buffers: shared hit=16 dirtied=1
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.057 ms
+ Execution Time: 0.126 ms
+(8 rows)
+
+ROLLBACK
+========== W1 - RUN 2 ==========
+BEGIN
+                                            QUERY PLAN                                            
+--------------------------------------------------------------------------------------------------
+ Insert on users  (cost=0.00..0.03 rows=1 width=569) (actual time=0.105..0.106 rows=1.00 loops=1)
+   Buffers: shared hit=68
+   ->  Result  (cost=0.00..0.03 rows=1 width=569) (actual time=0.026..0.026 rows=1.00 loops=1)
+         Buffers: shared hit=16
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.058 ms
+ Execution Time: 0.119 ms
+(8 rows)
+
+ROLLBACK
+========== W1 - RUN 3 ==========
+BEGIN
+                                            QUERY PLAN                                            
+--------------------------------------------------------------------------------------------------
+ Insert on users  (cost=0.00..0.03 rows=1 width=569) (actual time=0.105..0.105 rows=1.00 loops=1)
+   Buffers: shared hit=68
+   ->  Result  (cost=0.00..0.03 rows=1 width=569) (actual time=0.026..0.026 rows=1.00 loops=1)
+         Buffers: shared hit=16
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.058 ms
+ Execution Time: 0.119 ms
+(8 rows)
+
+ROLLBACK

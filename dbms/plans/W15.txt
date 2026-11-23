@@ -1,0 +1,72 @@
+========== W15 - RUN 1 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+                                                               QUERY PLAN                                                                
+-----------------------------------------------------------------------------------------------------------------------------------------
+ Delete on projects  (cost=0.14..8.16 rows=1 width=6) (actual time=0.027..0.028 rows=1.00 loops=1)
+   Buffers: shared hit=13
+   ->  Index Scan using idx_projects_owner_id on projects  (cost=0.14..8.16 rows=1 width=6) (actual time=0.003..0.003 rows=1.00 loops=1)
+         Index Cond: (owner_id = 43)
+         Filter: (id = 28)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=24
+ Planning Time: 0.261 ms
+ Trigger for constraint applications_project_id_fkey: time=0.555 calls=1
+ Trigger for constraint project_members_project_id_fkey: time=0.387 calls=1
+ Trigger for constraint project_roles_project_id_fkey: time=0.229 calls=1
+ Trigger for constraint project_skills_project_id_fkey: time=0.340 calls=1
+ Execution Time: 1.626 ms
+(15 rows)
+
+ROLLBACK
+========== W15 - RUN 2 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+                                                               QUERY PLAN                                                                
+-----------------------------------------------------------------------------------------------------------------------------------------
+ Delete on projects  (cost=0.14..8.16 rows=1 width=6) (actual time=0.013..0.013 rows=1.00 loops=1)
+   Buffers: shared hit=13
+   ->  Index Scan using idx_projects_owner_id on projects  (cost=0.14..8.16 rows=1 width=6) (actual time=0.002..0.002 rows=1.00 loops=1)
+         Index Cond: (owner_id = 44)
+         Filter: (id = 29)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=24
+ Planning Time: 0.103 ms
+ Trigger for constraint applications_project_id_fkey: time=0.212 calls=1
+ Trigger for constraint project_members_project_id_fkey: time=0.165 calls=1
+ Trigger for constraint project_roles_project_id_fkey: time=0.105 calls=1
+ Trigger for constraint project_skills_project_id_fkey: time=0.243 calls=1
+ Execution Time: 0.774 ms
+(15 rows)
+
+ROLLBACK
+========== W15 - RUN 3 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+                                                               QUERY PLAN                                                                
+-----------------------------------------------------------------------------------------------------------------------------------------
+ Delete on projects  (cost=0.14..8.16 rows=1 width=6) (actual time=0.012..0.012 rows=1.00 loops=1)
+   Buffers: shared hit=13
+   ->  Index Scan using idx_projects_owner_id on projects  (cost=0.14..8.16 rows=1 width=6) (actual time=0.001..0.002 rows=1.00 loops=1)
+         Index Cond: (owner_id = 45)
+         Filter: (id = 30)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=24
+ Planning Time: 0.098 ms
+ Trigger for constraint applications_project_id_fkey: time=0.217 calls=1
+ Trigger for constraint project_members_project_id_fkey: time=0.166 calls=1
+ Trigger for constraint project_roles_project_id_fkey: time=0.113 calls=1
+ Trigger for constraint project_skills_project_id_fkey: time=0.221 calls=1
+ Execution Time: 0.765 ms
+(15 rows)
+
+ROLLBACK

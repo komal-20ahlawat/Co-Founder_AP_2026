@@ -1,0 +1,72 @@
+========== W13 - RUN 1 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Insert on project_skills  (cost=0.00..0.02 rows=0 width=0) (actual time=0.093..0.093 rows=0.00 loops=1)
+   Conflict Resolution: NOTHING
+   Conflict Arbiter Indexes: project_skills_project_id_skill_id_key
+   Tuples Inserted: 1
+   Conflicting Tuples: 0
+   Buffers: shared hit=25 dirtied=6
+   ->  Result  (cost=0.00..0.02 rows=1 width=20) (actual time=0.016..0.016 rows=1.00 loops=1)
+         Buffers: shared hit=14 dirtied=1
+ Planning:
+   Buffers: shared hit=50
+ Planning Time: 0.048 ms
+ Trigger for constraint project_skills_project_id_fkey: time=0.289 calls=1
+ Trigger for constraint project_skills_skill_id_fkey: time=0.154 calls=1
+ Execution Time: 0.542 ms
+(14 rows)
+
+ROLLBACK
+========== W13 - RUN 2 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Insert on project_skills  (cost=0.00..0.02 rows=0 width=0) (actual time=0.049..0.049 rows=0.00 loops=1)
+   Conflict Resolution: NOTHING
+   Conflict Arbiter Indexes: project_skills_project_id_skill_id_key
+   Tuples Inserted: 1
+   Conflicting Tuples: 0
+   Buffers: shared hit=25
+   ->  Result  (cost=0.00..0.02 rows=1 width=20) (actual time=0.010..0.010 rows=1.00 loops=1)
+         Buffers: shared hit=14
+ Planning:
+   Buffers: shared hit=50
+ Planning Time: 0.027 ms
+ Trigger for constraint project_skills_project_id_fkey: time=0.142 calls=1
+ Trigger for constraint project_skills_skill_id_fkey: time=0.084 calls=1
+ Execution Time: 0.279 ms
+(14 rows)
+
+ROLLBACK
+========== W13 - RUN 3 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Insert on project_skills  (cost=0.00..0.02 rows=0 width=0) (actual time=0.071..0.071 rows=0.00 loops=1)
+   Conflict Resolution: NOTHING
+   Conflict Arbiter Indexes: project_skills_project_id_skill_id_key
+   Tuples Inserted: 1
+   Conflicting Tuples: 0
+   Buffers: shared hit=25
+   ->  Result  (cost=0.00..0.02 rows=1 width=20) (actual time=0.012..0.012 rows=1.00 loops=1)
+         Buffers: shared hit=14
+ Planning:
+   Buffers: shared hit=50
+ Planning Time: 0.032 ms
+ Trigger for constraint project_skills_project_id_fkey: time=0.171 calls=1
+ Trigger for constraint project_skills_skill_id_fkey: time=0.093 calls=1
+ Execution Time: 0.339 ms
+(14 rows)
+
+ROLLBACK

@@ -1,0 +1,60 @@
+========== W3 - RUN 1 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+                                                                QUERY PLAN                                                                 
+-------------------------------------------------------------------------------------------------------------------------------------------
+ Update on profiles  (cost=0.14..8.16 rows=1 width=1226) (actual time=0.012..0.013 rows=1.00 loops=1)
+   Buffers: shared hit=5
+   ->  Index Scan using idx_profiles_user_id on profiles  (cost=0.14..8.16 rows=1 width=1226) (actual time=0.003..0.003 rows=1.00 loops=1)
+         Index Cond: (user_id = 16)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=30
+ Planning Time: 0.124 ms
+ Trigger for constraint profiles_user_id_fkey: time=0.025 calls=1
+ Execution Time: 0.082 ms
+(11 rows)
+
+ROLLBACK
+========== W3 - RUN 2 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+                                                                QUERY PLAN                                                                 
+-------------------------------------------------------------------------------------------------------------------------------------------
+ Update on profiles  (cost=0.14..8.16 rows=1 width=1226) (actual time=0.010..0.010 rows=1.00 loops=1)
+   Buffers: shared hit=5
+   ->  Index Scan using idx_profiles_user_id on profiles  (cost=0.14..8.16 rows=1 width=1226) (actual time=0.002..0.002 rows=1.00 loops=1)
+         Index Cond: (user_id = 17)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=30
+ Planning Time: 0.091 ms
+ Trigger for constraint profiles_user_id_fkey: time=0.020 calls=1
+ Execution Time: 0.068 ms
+(11 rows)
+
+ROLLBACK
+========== W3 - RUN 3 ==========
+BEGIN
+INSERT 0 1
+INSERT 0 1
+                                                                QUERY PLAN                                                                 
+-------------------------------------------------------------------------------------------------------------------------------------------
+ Update on profiles  (cost=0.14..8.16 rows=1 width=1226) (actual time=0.010..0.011 rows=1.00 loops=1)
+   Buffers: shared hit=5
+   ->  Index Scan using idx_profiles_user_id on profiles  (cost=0.14..8.16 rows=1 width=1226) (actual time=0.002..0.002 rows=1.00 loops=1)
+         Index Cond: (user_id = 18)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=30
+ Planning Time: 0.103 ms
+ Trigger for constraint profiles_user_id_fkey: time=0.023 calls=1
+ Execution Time: 0.072 ms
+(11 rows)
+
+ROLLBACK

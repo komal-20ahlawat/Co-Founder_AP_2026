@@ -1,0 +1,57 @@
+========== W12 - RUN 1 ==========
+BEGIN
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Insert on skills  (cost=0.00..0.02 rows=1 width=230) (actual time=0.210..0.211 rows=1.00 loops=1)
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: skills_name_key
+   Tuples Inserted: 1
+   Conflicting Tuples: 0
+   Buffers: shared hit=36 dirtied=4
+   ->  Result  (cost=0.00..0.02 rows=1 width=230) (actual time=0.063..0.063 rows=1.00 loops=1)
+         Buffers: shared hit=15 dirtied=1
+ Planning:
+   Buffers: shared hit=65
+ Planning Time: 0.156 ms
+ Execution Time: 0.358 ms
+(12 rows)
+
+ROLLBACK
+========== W12 - RUN 2 ==========
+BEGIN
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Insert on skills  (cost=0.00..0.02 rows=1 width=230) (actual time=0.092..0.092 rows=1.00 loops=1)
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: skills_name_key
+   Tuples Inserted: 1
+   Conflicting Tuples: 0
+   Buffers: shared hit=37
+   ->  Result  (cost=0.00..0.02 rows=1 width=230) (actual time=0.024..0.024 rows=1.00 loops=1)
+         Buffers: shared hit=15
+ Planning:
+   Buffers: shared hit=65
+ Planning Time: 0.079 ms
+ Execution Time: 0.139 ms
+(12 rows)
+
+ROLLBACK
+========== W12 - RUN 3 ==========
+BEGIN
+                                            QUERY PLAN                                             
+---------------------------------------------------------------------------------------------------
+ Insert on skills  (cost=0.00..0.02 rows=1 width=230) (actual time=0.083..0.084 rows=1.00 loops=1)
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: skills_name_key
+   Tuples Inserted: 1
+   Conflicting Tuples: 0
+   Buffers: shared hit=37
+   ->  Result  (cost=0.00..0.02 rows=1 width=230) (actual time=0.021..0.021 rows=1.00 loops=1)
+         Buffers: shared hit=15
+ Planning:
+   Buffers: shared hit=65
+ Planning Time: 0.075 ms
+ Execution Time: 0.124 ms
+(12 rows)
+
+ROLLBACK
