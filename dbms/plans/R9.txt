@@ -1,0 +1,141 @@
+========== R9 - RUN 1 ==========
+                                                                      QUERY PLAN                                                                      
+------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Left Join  (cost=11.35..2677.70 rows=50 width=1936) (actual time=0.013..0.014 rows=0.00 loops=1)
+   Hash Cond: (p.owner_id = pr.user_id)
+   Buffers: shared hit=1 dirtied=1
+   ->  Seq Scan on projects p  (cost=0.00..10.50 rows=50 width=1538) (actual time=0.013..0.013 rows=0.00 loops=1)
+         Buffers: shared hit=1 dirtied=1
+   ->  Hash  (cost=10.60..10.60 rows=60 width=322) (never executed)
+         ->  Seq Scan on profiles pr  (cost=0.00..10.60 rows=60 width=322) (never executed)
+   SubPlan 1
+     ->  Aggregate  (cost=28.56..28.57 rows=1 width=32) (never executed)
+           ->  Sort  (cost=28.52..28.54 rows=8 width=218) (never executed)
+                 Sort Key: s.name
+                 ->  Hash Join  (cost=14.47..28.40 rows=8 width=218) (never executed)
+                       Hash Cond: (s.id = ps.skill_id)
+                       ->  Seq Scan on skills s  (cost=0.00..13.10 rows=310 width=222) (never executed)
+                       ->  Hash  (cost=14.37..14.37 rows=8 width=4) (never executed)
+                             ->  Bitmap Heap Scan on project_skills ps  (cost=4.21..14.37 rows=8 width=4) (never executed)
+                                   Recheck Cond: (project_id = p.id)
+                                   ->  Bitmap Index Scan on project_skills_project_id_skill_id_key  (cost=0.00..4.21 rows=8 width=0) (never executed)
+                                         Index Cond: (project_id = p.id)
+                                         Index Searches: 0
+   SubPlan 2
+     ->  Aggregate  (cost=8.19..8.20 rows=1 width=32) (never executed)
+           ->  Sort  (cost=8.17..8.18 rows=1 width=326) (never executed)
+                 Sort Key: r.id
+                 ->  Index Scan using idx_project_roles_project_id on project_roles r  (cost=0.14..8.16 rows=1 width=326) (never executed)
+                       Index Cond: (project_id = p.id)
+                       Index Searches: 0
+   SubPlan 3
+     ->  Aggregate  (cost=8.16..8.17 rows=1 width=8) (never executed)
+           ->  Index Scan using idx_project_roles_project_id on project_roles r_1  (cost=0.14..8.16 rows=1 width=4) (never executed)
+                 Index Cond: (project_id = p.id)
+                 Index Searches: 0
+   SubPlan 4
+     ->  Aggregate  (cost=8.16..8.17 rows=1 width=8) (never executed)
+           ->  Index Only Scan using project_members_project_id_user_id_key on project_members pm  (cost=0.14..8.16 rows=1 width=0) (never executed)
+                 Index Cond: (project_id = p.id)
+                 Heap Fetches: 0
+                 Index Searches: 0
+ Planning:
+   Buffers: shared hit=459 read=1
+ Planning Time: 1.284 ms
+ Execution Time: 0.065 ms
+(42 rows)
+
+========== R9 - RUN 2 ==========
+                                                                      QUERY PLAN                                                                      
+------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Left Join  (cost=11.35..2677.70 rows=50 width=1936) (actual time=0.004..0.005 rows=0.00 loops=1)
+   Hash Cond: (p.owner_id = pr.user_id)
+   Buffers: shared hit=1
+   ->  Seq Scan on projects p  (cost=0.00..10.50 rows=50 width=1538) (actual time=0.003..0.003 rows=0.00 loops=1)
+         Buffers: shared hit=1
+   ->  Hash  (cost=10.60..10.60 rows=60 width=322) (never executed)
+         ->  Seq Scan on profiles pr  (cost=0.00..10.60 rows=60 width=322) (never executed)
+   SubPlan 1
+     ->  Aggregate  (cost=28.56..28.57 rows=1 width=32) (never executed)
+           ->  Sort  (cost=28.52..28.54 rows=8 width=218) (never executed)
+                 Sort Key: s.name
+                 ->  Hash Join  (cost=14.47..28.40 rows=8 width=218) (never executed)
+                       Hash Cond: (s.id = ps.skill_id)
+                       ->  Seq Scan on skills s  (cost=0.00..13.10 rows=310 width=222) (never executed)
+                       ->  Hash  (cost=14.37..14.37 rows=8 width=4) (never executed)
+                             ->  Bitmap Heap Scan on project_skills ps  (cost=4.21..14.37 rows=8 width=4) (never executed)
+                                   Recheck Cond: (project_id = p.id)
+                                   ->  Bitmap Index Scan on project_skills_project_id_skill_id_key  (cost=0.00..4.21 rows=8 width=0) (never executed)
+                                         Index Cond: (project_id = p.id)
+                                         Index Searches: 0
+   SubPlan 2
+     ->  Aggregate  (cost=8.19..8.20 rows=1 width=32) (never executed)
+           ->  Sort  (cost=8.17..8.18 rows=1 width=326) (never executed)
+                 Sort Key: r.id
+                 ->  Index Scan using idx_project_roles_project_id on project_roles r  (cost=0.14..8.16 rows=1 width=326) (never executed)
+                       Index Cond: (project_id = p.id)
+                       Index Searches: 0
+   SubPlan 3
+     ->  Aggregate  (cost=8.16..8.17 rows=1 width=8) (never executed)
+           ->  Index Scan using idx_project_roles_project_id on project_roles r_1  (cost=0.14..8.16 rows=1 width=4) (never executed)
+                 Index Cond: (project_id = p.id)
+                 Index Searches: 0
+   SubPlan 4
+     ->  Aggregate  (cost=8.16..8.17 rows=1 width=8) (never executed)
+           ->  Index Only Scan using project_members_project_id_user_id_key on project_members pm  (cost=0.14..8.16 rows=1 width=0) (never executed)
+                 Index Cond: (project_id = p.id)
+                 Heap Fetches: 0
+                 Index Searches: 0
+ Planning:
+   Buffers: shared hit=460
+ Planning Time: 0.915 ms
+ Execution Time: 0.055 ms
+(42 rows)
+
+========== R9 - RUN 3 ==========
+                                                                      QUERY PLAN                                                                      
+------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Left Join  (cost=11.35..2677.70 rows=50 width=1936) (actual time=0.005..0.007 rows=0.00 loops=1)
+   Hash Cond: (p.owner_id = pr.user_id)
+   Buffers: shared hit=1
+   ->  Seq Scan on projects p  (cost=0.00..10.50 rows=50 width=1538) (actual time=0.005..0.005 rows=0.00 loops=1)
+         Buffers: shared hit=1
+   ->  Hash  (cost=10.60..10.60 rows=60 width=322) (never executed)
+         ->  Seq Scan on profiles pr  (cost=0.00..10.60 rows=60 width=322) (never executed)
+   SubPlan 1
+     ->  Aggregate  (cost=28.56..28.57 rows=1 width=32) (never executed)
+           ->  Sort  (cost=28.52..28.54 rows=8 width=218) (never executed)
+                 Sort Key: s.name
+                 ->  Hash Join  (cost=14.47..28.40 rows=8 width=218) (never executed)
+                       Hash Cond: (s.id = ps.skill_id)
+                       ->  Seq Scan on skills s  (cost=0.00..13.10 rows=310 width=222) (never executed)
+                       ->  Hash  (cost=14.37..14.37 rows=8 width=4) (never executed)
+                             ->  Bitmap Heap Scan on project_skills ps  (cost=4.21..14.37 rows=8 width=4) (never executed)
+                                   Recheck Cond: (project_id = p.id)
+                                   ->  Bitmap Index Scan on project_skills_project_id_skill_id_key  (cost=0.00..4.21 rows=8 width=0) (never executed)
+                                         Index Cond: (project_id = p.id)
+                                         Index Searches: 0
+   SubPlan 2
+     ->  Aggregate  (cost=8.19..8.20 rows=1 width=32) (never executed)
+           ->  Sort  (cost=8.17..8.18 rows=1 width=326) (never executed)
+                 Sort Key: r.id
+                 ->  Index Scan using idx_project_roles_project_id on project_roles r  (cost=0.14..8.16 rows=1 width=326) (never executed)
+                       Index Cond: (project_id = p.id)
+                       Index Searches: 0
+   SubPlan 3
+     ->  Aggregate  (cost=8.16..8.17 rows=1 width=8) (never executed)
+           ->  Index Scan using idx_project_roles_project_id on project_roles r_1  (cost=0.14..8.16 rows=1 width=4) (never executed)
+                 Index Cond: (project_id = p.id)
+                 Index Searches: 0
+   SubPlan 4
+     ->  Aggregate  (cost=8.16..8.17 rows=1 width=8) (never executed)
+           ->  Index Only Scan using project_members_project_id_user_id_key on project_members pm  (cost=0.14..8.16 rows=1 width=0) (never executed)
+                 Index Cond: (project_id = p.id)
+                 Heap Fetches: 0
+                 Index Searches: 0
+ Planning:
+   Buffers: shared hit=460
+ Planning Time: 1.280 ms
+ Execution Time: 0.075 ms
+(42 rows)
+

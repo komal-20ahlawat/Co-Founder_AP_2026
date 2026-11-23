@@ -1,0 +1,45 @@
+========== R7 - RUN 1 ==========
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Sort  (cost=25.93..26.70 rows=310 width=222) (actual time=0.050..0.051 rows=0.00 loops=1)
+   Sort Key: name
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=4 dirtied=1
+   ->  Seq Scan on interests  (cost=0.00..13.10 rows=310 width=222) (actual time=0.017..0.017 rows=0.00 loops=1)
+         Buffers: shared hit=1 dirtied=1
+ Planning:
+   Buffers: shared hit=105
+ Planning Time: 0.371 ms
+ Execution Time: 0.073 ms
+(10 rows)
+
+========== R7 - RUN 2 ==========
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Sort  (cost=25.93..26.70 rows=310 width=222) (actual time=0.015..0.015 rows=0.00 loops=1)
+   Sort Key: name
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=4
+   ->  Seq Scan on interests  (cost=0.00..13.10 rows=310 width=222) (actual time=0.005..0.005 rows=0.00 loops=1)
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=105
+ Planning Time: 0.212 ms
+ Execution Time: 0.035 ms
+(10 rows)
+
+========== R7 - RUN 3 ==========
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Sort  (cost=25.93..26.70 rows=310 width=222) (actual time=0.011..0.011 rows=0.00 loops=1)
+   Sort Key: name
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=4
+   ->  Seq Scan on interests  (cost=0.00..13.10 rows=310 width=222) (actual time=0.003..0.003 rows=0.00 loops=1)
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=105
+ Planning Time: 0.179 ms
+ Execution Time: 0.024 ms
+(10 rows)
+

@@ -1,0 +1,39 @@
+========== R1 - RUN 1 ==========
+                                                        QUERY PLAN                                                        
+--------------------------------------------------------------------------------------------------------------------------
+ Index Scan using users_email_key on users  (cost=0.14..8.16 rows=1 width=4) (actual time=0.007..0.007 rows=1.00 loops=1)
+   Index Cond: ((email)::text = 'ahlawatkomal20@gmail.com'::text)
+   Index Searches: 1
+   Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=86
+ Planning Time: 0.183 ms
+ Execution Time: 0.024 ms
+(8 rows)
+
+========== R1 - RUN 2 ==========
+                                                        QUERY PLAN                                                        
+--------------------------------------------------------------------------------------------------------------------------
+ Index Scan using users_email_key on users  (cost=0.14..8.16 rows=1 width=4) (actual time=0.007..0.007 rows=1.00 loops=1)
+   Index Cond: ((email)::text = 'ahlawatkomal20@gmail.com'::text)
+   Index Searches: 1
+   Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=86
+ Planning Time: 0.192 ms
+ Execution Time: 0.024 ms
+(8 rows)
+
+========== R1 - RUN 3 ==========
+                                                        QUERY PLAN                                                        
+--------------------------------------------------------------------------------------------------------------------------
+ Index Scan using users_email_key on users  (cost=0.14..8.16 rows=1 width=4) (actual time=0.007..0.008 rows=1.00 loops=1)
+   Index Cond: ((email)::text = 'ahlawatkomal20@gmail.com'::text)
+   Index Searches: 1
+   Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=86
+ Planning Time: 0.211 ms
+ Execution Time: 0.026 ms
+(8 rows)
+

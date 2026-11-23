@@ -1,0 +1,57 @@
+========== R4 - RUN 1 ==========
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.29..16.33 rows=1 width=1796) (actual time=0.025..0.026 rows=1.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Scan using users_pkey on users u  (cost=0.14..8.16 rows=1 width=520) (actual time=0.011..0.011 rows=1.00 loops=1)
+         Index Cond: (id = 1)
+         Index Searches: 1
+         Buffers: shared hit=2
+   ->  Index Scan using idx_profiles_user_id on profiles p  (cost=0.14..8.16 rows=1 width=1280) (actual time=0.011..0.012 rows=1.00 loops=1)
+         Index Cond: (user_id = 1)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=192
+ Planning Time: 0.780 ms
+ Execution Time: 0.139 ms
+(14 rows)
+
+========== R4 - RUN 2 ==========
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.29..16.33 rows=1 width=1796) (actual time=0.017..0.018 rows=1.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Scan using users_pkey on users u  (cost=0.14..8.16 rows=1 width=520) (actual time=0.006..0.006 rows=1.00 loops=1)
+         Index Cond: (id = 1)
+         Index Searches: 1
+         Buffers: shared hit=2
+   ->  Index Scan using idx_profiles_user_id on profiles p  (cost=0.14..8.16 rows=1 width=1280) (actual time=0.009..0.009 rows=1.00 loops=1)
+         Index Cond: (user_id = 1)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=192
+ Planning Time: 0.556 ms
+ Execution Time: 0.052 ms
+(14 rows)
+
+========== R4 - RUN 3 ==========
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.29..16.33 rows=1 width=1796) (actual time=0.018..0.018 rows=1.00 loops=1)
+   Buffers: shared hit=4
+   ->  Index Scan using users_pkey on users u  (cost=0.14..8.16 rows=1 width=520) (actual time=0.005..0.005 rows=1.00 loops=1)
+         Index Cond: (id = 1)
+         Index Searches: 1
+         Buffers: shared hit=2
+   ->  Index Scan using idx_profiles_user_id on profiles p  (cost=0.14..8.16 rows=1 width=1280) (actual time=0.009..0.009 rows=1.00 loops=1)
+         Index Cond: (user_id = 1)
+         Index Searches: 1
+         Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=192
+ Planning Time: 0.474 ms
+ Execution Time: 0.052 ms
+(14 rows)
+
