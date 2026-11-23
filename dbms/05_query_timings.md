@@ -10,7 +10,7 @@
 - READ queries: R1–R11
 - WRITE queries: W1–W15
 
-# Query Execution Timings
+# 2. Query Execution Timings
 
 All 26 database queries (R1–R11 and W1–W15) were benchmarked using PostgreSQL `EXPLAIN (ANALYZE, BUFFERS)`. Each query was executed three times, and the average execution time was calculated from those three runs.
 
